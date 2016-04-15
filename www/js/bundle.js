@@ -25372,7 +25372,8 @@
 	    );
 	  },
 	  displayAlert: function displayAlert() {
-	    alert('Cordova !');
+	    var s = device.manufacturer;
+	    alert('Cordova ! device.manufacturer=' + s);
 	    //that.context.router.push('/see');
 	  },
 	  onPause: function onPause() {
