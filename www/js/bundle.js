@@ -65,14 +65,16 @@
 	  // var browserHistory = require('react-router').browserHistory;
 	  //
 	  var AppControllerView = __webpack_require__(223);
-	  var HomeControllerView = __webpack_require__(224);
-	  var SeeAllControllerView = __webpack_require__(225);
-	  var AddNewControllerView = __webpack_require__(226);
+	  var BootControllerView = __webpack_require__(224);
+	  var HomeControllerView = __webpack_require__(225);
+	  var SeeAllControllerView = __webpack_require__(226);
+	  var AddNewControllerView = __webpack_require__(227);
 	  //
 	  var routes = React.createElement(
 	    Route,
 	    { path: '/', component: AppControllerView },
-	    React.createElement(IndexRoute, { component: HomeControllerView }),
+	    React.createElement(IndexRoute, { component: BootControllerView }),
+	    React.createElement(Route, { path: 'home', component: HomeControllerView }),
 	    React.createElement(Route, { path: 'see', component: SeeAllControllerView }),
 	    React.createElement(Route, { path: 'add', component: AddNewControllerView })
 	  );
@@ -25285,6 +25287,8 @@
 	var IndexLink = __webpack_require__(166).IndexLink;
 	var browserHistory = __webpack_require__(166).browserHistory;
 
+	var BootControllerView = __webpack_require__(224);
+
 	var AppControllerView = React.createClass({
 	  displayName: 'AppControllerView',
 
@@ -25305,8 +25309,10 @@
 	  },
 
 	  render: function render() {
-	    alert('render:' + this.state.isDeviceReady);
-	    // Checks for onDeviceReady event and then only renders the actual application
+	    // Two ways to go about after checking the onDeviceReady event.
+	    // 1. First is just move to a different route on the event
+	    // 2. Second is adding a if-else and either return a default view or the application on the event
+
 	    if (this.state.isDeviceReady === 'YEP') {
 	      return React.createElement(
 	        'div',
@@ -25347,7 +25353,7 @@
 	              null,
 	              React.createElement(
 	                IndexLink,
-	                { to: '/' },
+	                { to: '/home' },
 	                'Home'
 	              )
 	            )
@@ -25358,17 +25364,14 @@
 	        this.props.children
 	      );
 	    } else {
-	      return React.createElement(
-	        'div',
-	        null,
-	        'Device is getting ready.'
-	      );
+	      return React.createElement(BootControllerView, null);
 	    }
 	  },
 
 	  onDeviceReady: function onDeviceReady() {
 	    //alert('AppControllerView : Device Ready!');
-	    this.setState({ isDeviceReady: 'YEP' });
+	    this.setState({ isDeviceReady: 'YEP' }); // type 2: checks the if-else and then moves to the route too
+	    this.context.router.push('/home'); // type 1: just a different route
 	  }
 
 	});
@@ -25376,6 +25379,31 @@
 
 /***/ },
 /* 224 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var BootControllerView = React.createClass({
+	  displayName: 'BootControllerView',
+
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      'BootControllerView',
+	      React.createElement(
+	        'div',
+	        null,
+	        'Cordova: onDeviceReady event is not yet happened !'
+	      )
+	    );
+	  }
+	});
+	module.exports = BootControllerView;
+
+/***/ },
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25394,6 +25422,7 @@
 	    //
 	  },
 	  render: function render() {
+	    // that.context.router.push('/see');
 	    return React.createElement(
 	      'div',
 	      null,
@@ -25421,7 +25450,7 @@
 	module.exports = HomeControllerView;
 
 /***/ },
-/* 225 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25441,7 +25470,7 @@
 	module.exports = SeeAllControllerView;
 
 /***/ },
-/* 226 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
