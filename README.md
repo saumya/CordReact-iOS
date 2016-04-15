@@ -1,6 +1,9 @@
-Cordova Platform Application
+Cordova iOS Platform Application
 =============================
-### Running the applciation,
+ - It uses the platform specific workflow to create the Cordova project.
+ - Then uses a [build JS file created from a ReactJS][1] application.
+
+### Running the applciation
 
  From inside the application forlder
 ```
@@ -19,4 +22,8 @@ plugman install --platform ios --project . --plugin cordova-plugin-device
 ```
 plugman install --platform ios --project /path/to/cordova/project/folder --plugin cordova-plugin-device
 ```
+
+
+
+[1]: https://github.com/saumya/CordReact-JS
 
