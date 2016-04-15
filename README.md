@@ -1,7 +1,14 @@
 Cordova Platform Application
 =============================
+### Running the applciation,
 
-Plugman to add plugins
+ From inside the application forlder
+```
+./cordova/run ios
+```
+
+
+### Plugman to add plugins
 
  From `inside project` folder
 ```

@@ -78,6 +78,7 @@
 	  );
 	  //
 	  var App = ReactDOM.render(React.createElement(Router, { routes: routes, history: hashHistory }), document.getElementById('react-app'));
+	  //
 	})();
 
 /***/ },
@@ -25290,57 +25291,86 @@
 	  contextTypes: {
 	    router: React.PropTypes.object.isRequired
 	  },
-	  render: function render() {
-	    var that = this;
 
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'nav',
-	        { className: 'u-full-width' },
+	  getInitialState: function getInitialState() {
+	    return { isDeviceReady: 'NOPE' };
+	  },
+	  componentWillMount: function componentWillMount() {
+	    var that = this;
+	    document.addEventListener("deviceready", that.onDeviceReady, false);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    var that = this;
+	    document.removeEventListener("deviceready", that.onDeviceReady, false);
+	  },
+
+	  render: function render() {
+	    alert('render:' + this.state.isDeviceReady);
+	    // Checks for onDeviceReady event and then only renders the actual application
+	    if (this.state.isDeviceReady === 'YEP') {
+	      return React.createElement(
+	        'div',
+	        null,
 	        React.createElement(
-	          'h2',
-	          null,
-	          'The Required.'
-	        ),
-	        React.createElement(
-	          'ul',
-	          { id: 'navlist' },
+	          'nav',
+	          { className: 'u-full-width' },
 	          React.createElement(
-	            'li',
+	            'h2',
 	            null,
-	            React.createElement(
-	              Link,
-	              { to: '/see', className: 'button button-red' },
-	              ' See All '
-	            )
+	            'Device Ready? ',
+	            this.state.isDeviceReady,
+	            '.'
 	          ),
 	          React.createElement(
-	            'li',
-	            null,
+	            'ul',
+	            { id: 'navlist' },
 	            React.createElement(
-	              Link,
-	              { to: '/add', className: 'button button-red' },
-	              ' Add New '
-	            )
-	          ),
-	          React.createElement(
-	            'li',
-	            null,
+	              'li',
+	              null,
+	              React.createElement(
+	                Link,
+	                { to: '/see', className: 'button button-red' },
+	                ' See All '
+	              )
+	            ),
 	            React.createElement(
-	              IndexLink,
-	              { to: '/' },
-	              'Home'
+	              'li',
+	              null,
+	              React.createElement(
+	                Link,
+	                { to: '/add', className: 'button button-red' },
+	                ' Add New '
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              React.createElement(
+	                IndexLink,
+	                { to: '/' },
+	                'Home'
+	              )
 	            )
 	          )
-	        )
-	      ),
+	        ),
 
-	      //renders the children
-	      this.props.children
-	    );
+	        //renders the children
+	        this.props.children
+	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        null,
+	        'Device is getting ready.'
+	      );
+	    }
+	  },
+
+	  onDeviceReady: function onDeviceReady() {
+	    //alert('AppControllerView : Device Ready!');
+	    this.setState({ isDeviceReady: 'YEP' });
 	  }
+
 	});
 	module.exports = AppControllerView;
 
@@ -25348,38 +25378,44 @@
 /* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(1);
 	var HomeControllerView = React.createClass({
-	  displayName: "HomeControllerView",
+	  displayName: 'HomeControllerView',
 
+	  getInitialState: function getInitialState() {
+	    return { manufacturer: 'NOT FOUND YET!' };
+	  },
 	  componentWillMount: function componentWillMount() {
-	    var that = this;
-	    document.addEventListener("deviceready", that.displayAlert, false);
-	    document.addEventListener("pause", that.onPause, false);
+	    //
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
-	    var that = this;
-	    document.removeEventListener("deviceready", that.displayAlert, false);
-	    document.removeEventListener("pause", that.onPause, false);
+	    //
 	  },
 	  render: function render() {
 	    return React.createElement(
-	      "div",
+	      'div',
 	      null,
-	      "HomeControllerView"
+	      'HomeControllerView',
+	      React.createElement(
+	        'div',
+	        null,
+	        'We can call all the Cordova APIs as the application starts only after the deviceReady event check.'
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        'Device manufacturer is ',
+	        device.manufacturer
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        'Device model is ',
+	        device.model
+	      )
 	    );
-	  },
-	  displayAlert: function displayAlert() {
-	    var s = device.manufacturer;
-	    alert('Cordova ! device.manufacturer=' + s);
-	    //that.context.router.push('/see');
-	  },
-	  onPause: function onPause() {
-	    //('AppControllerView:onPause !');
-	    alert('pause');
-	    console.log('AppControllerView:onPause');
 	  }
 	});
 	module.exports = HomeControllerView;
